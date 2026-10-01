@@ -5,8 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>오늘의 찬장</title>
 <meta name="theme-color" content="#34473C">
+
+<!-- 1. 파비콘 및 앱 아이콘 (단정한 감성 한글 '찬' 로고) -->
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='28' fill='%2334473C'/><path d='M28 52 C28 68 40 76 50 76 C60 76 72 68 72 52 Z' fill='%23FBFAF3'/><path d='M32 48 Q50 36 68 48 Z' fill='%23FBFAF3'/><rect x='44' y='76' width='12' height='5' rx='2' fill='%23FBFAF3'/></svg>">
 <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='28' fill='%2334473C'/><path d='M28 52 C28 68 40 76 50 76 C60 76 72 68 72 52 Z' fill='%23FBFAF3'/><path d='M32 48 Q50 36 68 48 Z' fill='%23FBFAF3'/><rect x='44' y='76' width='12' height='5' rx='2' fill='%23FBFAF3'/></svg>">
+
+<!-- 2. 인라인 Web Manifest (별도 manifest.json 파일 없이 자체 작동) -->
+<link rel="manifest" href="data:application/manifest+json;base64,eyJuYW1lIjoi7Jik64qY7J2YIOywkeyepSIsInNob3J0X25hbWUiOiLsnKTrhpjsnZjssKRxIiwic3RhcnRfdXJsIjoiLi8iLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIseyJiYWNrZ3JvdW5kX2NvbG9yIjoiI0YyRUZFNCIsInRoZW1lX2NvbG9yIjoiIzM0NDczQyIsImljb25zIjpbeyJzcmMiOiJkYXRhOmltYWdlL3N2Zyt4bWwsPHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAxMDAgMTAwJz48cmVjdCB3aWR0aD0nMTAwJyBoZWlnaHQ9JzEwMCcgcng9JzI4JyBmaWxsPScrMjMzNDQ3M0MnLz48cmVjdCB4PSc4JyB5PSc4JyB3aWR0aD0nODQnIGhlaWdodD0nODQnIHJ4PScyMicgZmlsbD0nbm9uZScgc3Ryb2tlPScrMjM2Qjg3NzUnIHN0cm9rZS13aWR0aD0nMicvPjx0ZXh0IHg9JzUwJyB5PSc2OCcgc2l6ZT0nNDgnIGZvbnQtZmFtaWx5PSdzYW5zLXNlcmlmJyBmb250LXdlaWdodD0nYm9sZCcgZmlsbD0nKzIzRkJGQUYzJyB0ZXh0LWFuY2hvcj0nbWlkZGxlJz7ssKRxL3RleHQ+PC9zdmc+Iiwic2l6ZXMiOiIxOTJ4MTkyIiwiYW55Ijp0cnVlfV19">
+
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;700&family=Noto+Sans+KR:wght@400;500;700&display=swap');
 
@@ -378,6 +384,13 @@
 </div>
 
 <script>
+// PWA 필수 조건인 인라인 Service Worker 등록
+if ('serviceWorker' in navigator) {
+  const swCode = `self.addEventListener('fetch', function(e) {});`;
+  const swBlob = new Blob([swCode], {type: 'application/javascript'});
+  navigator.serviceWorker.register(URL.createObjectURL(swBlob)).catch(()=>{});
+}
+
 (function () {
   const STORAGE_KEY = 'banchan-items';
   const WEEKDAY_LABELS = ['일', '월', '화', '수', '목', '금', '토'];
